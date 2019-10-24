@@ -1,0 +1,130 @@
+<div class="container-fluid">
+    <ul class="nav nav-tabs justify-content-center" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#whatisc3cup">What is C<sup>3</sup> Cup?</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#rulesofgame">Rules of the Game</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#results">Previous Competition Results</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="whatisc3cup" class="container tab-pane active">
+            <br>
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-xs-12 col-sm-6">
+                        <img src="../../../assets/Logo/My-Movie.gif" width="100%" height="100%" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xs-12 col-sm-6 text-justify list-group-item">
+                        <p>Are you a Jack of all the WCA Speedcubing events? Well guess what; For the very first time in India, here is an exciting opportunity for you to prove that you are the King of Jacks!
+                        <br><br>
+                        Introducing the C³ Cup 2019!
+                        <br><br>
+                        For select competitions hosted by the Chennai Cubing Club in Tamilnadu throughout the year, top 10 ranks of all events will be awarded points and the person with the highest points at the end of the year wins the C³ Cup. Make sure to attend all the competitions and seize the opportunity to secure the highest points. Each C³ Cup competition will be announced on our pages.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="jumbotron text-center" *ngFor="let item of results">
+                <h1>SCOREBOARD</h1>
+                <h4>(Until {{item.title}})</h4>
+            </div>
+            
+            <table class="table Well" *ngFor="let item of results">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let data of item.result; let i = index">
+                    <tr>
+                        <td class="table-data text-center">{{i + 1}}</td>
+                        <td class="table-data">{{data.name}}</td>
+                        <td class="table-data">{{data.score}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="rulesofgame" class="container tab-pane">
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">Ranking</h1>
+                    <p>Each competitor starts at 0 points at the beginning of the season (before the first competition). For each event held at any competition, points are added to a competitor's tally as per the followind table:</p>
+                    <table class="table table-hover table-responsive text-center">
+                        <thead>
+                            <tr>
+                                <th>Place</th>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Points</th>
+                                <td>25x</td>
+                                <td>18x</td>
+                                <td>15x</td>
+                                <td>12x</td>
+                                <td>10x</td>
+                                <td>8x</td>
+                                <td>6x</td>
+                                <td>4x</td>
+                                <td>2x</td>
+                                <td>1x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Places are determined from the final round of the event. No points are awarded to
+                        DNF results.
+                        Here, 'x' is a multiplier that varies as per the event and the number of competitors as so:
+                    </p>
+
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>x</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>222, 333, 333OH, Pyraminx, Skewb</td>
+                                <td>1.0 + y</td>
+                            </tr>
+                            <tr>
+                                <td>444, 555, 333bf, Megaminx, Square-1, 333WF, Clock, 333FM</td>
+                                <td>1.2 + y</td>
+                            </tr>
+                            <tr>
+                                <td>666, 777, 444BF, 555BF, 333MBLD</td>
+                                <td>1.4 + y</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-center">Here 'y' is (number of competitors in that event)/100. <b>The person with the most points wins the Cup.</b></p>
+                </div>
+            </div>
+        </div>
+        <div id="results" class="container tab-pane">
+            <br>
+           <h2 class="text-center card">Will be updated soon...</h2>
+        </div>
+    </div>
+</div>
