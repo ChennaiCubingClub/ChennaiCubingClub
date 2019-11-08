@@ -11,359 +11,375 @@ export class ResultsService {
   
   results: any = [
     {
-      "title": "HLC Cube Challenge 2019",
+      "title": "SRM Cube Open 2019",
       "result": [
         {
-        "name": "Mohammed Aiman Koli",
-        "score": "513.99"
+            "name": "Mohammed Aiman Koli",
+            "score": "513.99"
         },
         {
-          "name": "Pranav Prabhu",
-          "score": "457.05"
+            "name": "Nitin Nathan",
+            "score": "483.46"
         },
         {
-          "name": "Saravanan Gowthaman",
-          "score": "456.4"
+            "name": "Pranav Prabhu",
+            "score": "476.37"
         },
         {
-          "name": "Nitin Nathan",
-          "score": "386.94"
+            "name": "Saravanan Gowthaman",
+            "score": "456.4"
         },
         {
-          "name": "Vijay Kishore",
-          "score": "373.16"
+            "name": "Vijay Kishore",
+            "score": "417.76"
         },
         {
-          "name": "Sujai Shakthivel",
-          "score": "361.4"
+            "name": "Sujai Shakthivel",
+            "score": "391.4"
         },
         {
-          "name": "Anirudh Sureshram",
-          "score": "319.25"
+            "name": "Vishal Mohanraju",
+            "score": "339.52"
         },
         {
-          "name": "Sripad Sarma Katrapati",
-          "score": "318.39"
+            "name": "Lalith Sashank",
+            "score": "337.16"
         },
         {
-          "name": "Vishal Mohanraju",
-          "score": "299.1"
+            "name": "Anirudh Sureshram",
+            "score": "319.25"
         },
         {
-          "name": "Lalith Sashank",
-          "score": "293.8"
+            "name": "Sripad Sarma Katrapati",
+            "score": "318.39"
         },
         {
-          "name": "Anish Rajesh",
-          "score": "260.86"
+            "name": "Anish Rajesh",
+            "score": "260.86"
         },
         {
-          "name": "Akash Rupela",
-          "score": "235.32"
+            "name": "Akash Rupela",
+            "score": "235.32"
         },
         {
-          "name": "Sandeep Rajaram",
-          "score": "199.88"
+            "name": "Sandeep Rajaram",
+            "score": "220.52"
         },
         {
-          "name": "Emmanuel Rajapandian",
-          "score": "183.17"
+            "name": "Emmanuel Rajapandian",
+            "score": "183.17"
         },
         {
-          "name": "Kunaal Parekh",
-          "score": "182.64"
+            "name": "Kunaal Parek",
+            "score": "182.64"
         },
         {
-          "name": "Sukesh Kumar",
-          "score": "171.36"
+            "name": "Aayush Sriram Bharadwaj",
+            "score": "175.24"
         },
         {
-          "name": "Nithin Babu",
-          "score": "170.1"
+            "name": "Sukesh Kumar",
+            "score": "171.36"
         },
         {
-          "name": "Daniel James",
-          "score": "163.93"
+            "name": "Nithin Babu",
+            "score": "170.1"
         },
         {
-          "name": "Imruthun Meenakshisundaram",
-          "score": "135.18"
+            "name": "Daniel James",
+            "score": "163.93"
         },
         {
-          "name": "Bhargav Narasimhan",
-          "score": "132.79"
+            "name": "Imruthun Meenakshisundaram",
+            "score": "135.18"
         },
         {
-          "name": "Naren Ramesh",
-          "score": "131.5"
+            "name": "Bhargav Narasimhan",
+            "score": "132.79"
         },
         {
-          "name": "Adithyaa Anand",
-          "score": "127.43"
+            "name": "Naren Ramesh",
+            "score": "131.5"
         },
         {
-          "name": "Hariharan Sachidanandam",
-          "score": "121.99"
+            "name": "Adithyaa Anand",
+            "score": "127.43"
         },
         {
-          "name": "Aayush Sriram Bharadwaj",
-          "score": "120.98"
+            "name": "Hariharan Sachidanandam",
+            "score": "121.99"
         },
         {
-          "name": "Rahul Venkatesan",
-          "score": "113.61"
+            "name": "Rahul Venkatesan",
+            "score": "113.61"
         },
         {
-          "name": "Hari Anirudh",
-          "score": "100.86"
+            "name": "Hari Anirudh",
+            "score": "100.86"
         },
         {
-          "name": "Santosh Naranapatty",
-          "score": "88.22"
+            "name": "Santosh Naranapatty",
+            "score": "88.22"
         },
         {
-          "name": "Atharva R. Bhat",
-          "score": "82.11"
+            "name": "Atharva R. Bhat",
+            "score": "82.11"
         },
         {
-          "name": "Naren Loganathan",
-          "score": "81.31"
+            "name": "Pritesh Lunkad",
+            "score": "81.41"
         },
         {
-          "name": "Pritesh Lunkad",
-          "score": "75.01"
+            "name": "Naren Loganathan",
+            "score": "81.31"
         },
         {
-          "name": "Vishwanath Jeyaraman",
-          "score": "74.2"
+            "name": "Vishwanath Jeyaraman",
+            "score": "74.2"
         },
         {
-          "name": "Athul Gokuldas",
-          "score": "72.98"
+            "name": "Athul Gokuldas",
+            "score": "72.98"
         },
         {
-          "name": "Rajha Sirokshan",
-          "score": "69.39"
+            "name": "Rajha Sirokshan",
+            "score": "69.39"
         },
         {
-          "name": "Pamulapati Sai Teja",
-          "score": "67.56"
+            "name": "Pamulapati Sai Teja",
+            "score": "67.56"
         },
         {
-          "name": "Santhosh Sabarinathan",
-          "score": "63.60"
+            "name": "Santhosh Sabarinathan",
+            "score": "63.6"
         },
         {
-          "name": "Mohan Balaji",
-          "score": "57.87"
+            "name": "Mohan Balaji",
+            "score": "57.87"
         },
         {
-          "name": "Ashwin Ramesh",
-          "score": "55.68"
+            "name": "Ashwin Ramesh",
+            "score": "55.68"
         },
         {
-          "name": "Hemvarshan Muthukumar",
-          "score": "49.21"
+            "name": "Nischal Nori",
+            "score": "49.8"
         },
         {
-          "name": "Hrithik Ramnath",
-          "score": "48.63"
+            "name": "Hemvarshan Muthukumar",
+            "score": "49.21"
         },
         {
-          "name": "Nitheesh Kumar Elangovan",
-          "score": "45.24"
+            "name": "Lakshimi Rajaram",
+            "score": "48.78"
         },
         {
-          "name": "Balaji Balamurugan",
-          "score": "43.3"
+            "name": "Hrithik Ramnath",
+            "score": "48.63"
         },
         {
-          "name": "Nithish Raju",
-          "score": "41.54"
+            "name": "Nitheesh Kumar Elangovan",
+            "score": "45.24"
         },
         {
-          "name": "Lakshimi Rajaram ",
-          "score": "40.26"
+            "name": "Balaji Balamurugan",
+            "score": "43.3"
         },
         {
-          "name": "Vaishnav Nitesh",
-          "score": "39.88"
+            "name": "Nithish Raju",
+            "score": "41.54"
         },
         {
-          "name": "Ameya Anand Kamat",
-          "score": "29.22"
+            "name": "Vaishnav Nitesh",
+            "score": "39.88"
         },
         {
-          "name": "Mithilesh Gopalakrishnan",
-          "score": "28"
+            "name": "Ameya Anand Kamat",
+            "score": "29.22"
         },
         {
-          "name": "Arvind Tatiparti",
-          "score": "27.4"
+            "name": "Mohammed Razal",
+            "score": "28.8"
         },
         {
-          "name": "Rakesh M. Vaideeswaran",
-          "score": "24.94"
+            "name": "Mithilesh Gopalakrishnan",
+            "score": "28"
         },
         {
-          "name": "Khavin Janarthana",
-          "score": "22.47"
+            "name": "Arvind Tatiparti",
+            "score": "27.4"
         },
         {
-          "name": "Ritvik Raj",
-          "score": "22.47"
+            "name": "Rakesh M. Vaideeswaran",
+            "score": "24.94"
         },
         {
-          "name": "Hari Pranav",
-          "score": "21.06"
+            "name": "Khavin Janarthana",
+            "score": "22.47"
         },
         {
-          "name": "Akshay Keswani",
-          "score": "20.36"
+            "name": "Ritvik Raj",
+            "score": "22.47"
         },
         {
-          "name": "Keshav Sundararaman",
-          "score": "19.95"
+            "name": "Hari Pranav",
+            "score": "21.06"
         },
         {
-          "name": "Daniel Koilpillai",
-          "score": "19.12"
+            "name": "Akshay Keswani",
+            "score": "20.36"
         },
         {
-          "name": "Shobhan Karthish",
-          "score": "17.26"
+            "name": "Keshav Sundararaman",
+            "score": "19.95"
         },
         {
-          "name": "Kishore Kumar",
-          "score": "15.5"
+            "name": "Daniel Koilpillai",
+            "score": "19.12"
         },
         {
-          "name": "Adithyaa Hariharan",
-          "score": "13.75"
+            "name": "Shobhan Karthish",
+            "score": "17.26"
         },
         {
-          "name": "Pradhyun Naresh",
-          "score": "13.66"
+            "name": "Arun Krishnan",
+            "score": "16.52"
         },
         {
-          "name": "Jagadish Muthuram",
-          "score": "12.6"
+            "name": "Kishore Kumar",
+            "score": "15.5"
         },
         {
-          "name": "Vani Muthukrishnan",
-          "score": "12.34"
+            "name": "Pradeep Sudakar",
+            "score": "14.2"
         },
         {
-          "name": "Ramanathan Venkatachalam",
-          "score": "11.35"
+            "name": "Adithyaa Hariharan",
+            "score": "13.75"
         },
         {
-          "name": "Sachin Arvind",
-          "score": "11.18"
+            "name": "Pradhyun Naresh",
+            "score": "13.66"
         },
         {
-          "name": "Thabares Nazeer Basha",
-          "score": "10.22"
+            "name": "Jagadish Muthuram",
+            "score": "12.6"
         },
         {
-          "name": "Akunuri Sri Abilash",
-          "score": "10.21"
+            "name": "Vani Muthukrishnan",
+            "score": "12.34"
         },
         {
-          "name": "Sree Vathsan",
-          "score": "10.08"
+            "name": "Ramanathan Venkatachalam",
+            "score": "11.35"
         },
         {
-          "name": "Kailash Anand",
-          "score": "9.76"
+            "name": "Sachin Arvind",
+            "score": "11.18"
         },
         {
-          "name": "Sneha Koodalingam",
-          "score": "9.36"
+            "name": "Thabares Nazeer Basha",
+            "score": "10.22"
         },
         {
-          "name": "Arulkumaran Balaji",
-          "score": "9.36"
+            "name": "Akunuri Sri Abilash",
+            "score": "10.21"
         },
         {
-          "name": "Harihanth Kumar",
-          "score": "9.04"
+            "name": "Sree Vathsan",
+            "score": "10.08"
         },
         {
-          "name": "Mohammed Rushaan",
-          "score": "8.88"
+            "name": "Kailash Anand",
+            "score": "9.76"
         },
         {
-          "name": "Karthikeyan Tamilarasan",
-          "score": "8.34"
+            "name": "Arjun Venkatesh",
+            "score": "9.61"
         },
         {
-          "name": "Pranav R. Mallya",
-          "score": "8.34"
+            "name": "Sneha Koodalingam",
+            "score": "9.36"
         },
         {
-          "name": "Arun Seshadhri",
-          "score": "7.8"
+            "name": "Arulkumaran Balaji",
+            "score": "9.36"
         },
         {
-          "name": "Nandha Kumar",
-          "score": "7.74"
+            "name": "Vikram Gopinath",
+            "score": "9.12"
         },
         {
-          "name": "Sarvesh Suryanarayan",
-          "score": "7.05"
+            "name": "Harihanth Kumar",
+            "score": "9.04"
         },
         {
-          "name": "Sanjeev Kumar",
-          "score": "6.4"
+            "name": "Mohammed Rushaan",
+            "score": "8.88"
         },
         {
-          "name": "Naganesan Thirunavukarasu",
-          "score": "5.72"
+            "name": "Karthikeyan Tamilarasan",
+            "score": "8.34"
         },
         {
-          "name": "Vikram Gopinath",
-          "score": "5.68"
+            "name": "Pranav R. Mallya",
+            "score": "8.34"
         },
         {
-          "name": "Prashanth Swaminathan",
-          "score": "5.40"
+            "name": "Arun Seshadhri",
+            "score": "7.8"
         },
         {
-          "name": "Arun Krishnan",
-          "score": "5.16"
+            "name": "Nandha Kumar",
+            "score": "7.74"
         },
         {
-          "name": "Rithesh Subbulakshmi Saravanakumar",
-          "score": "4.88"
+            "name": "Sarvesh Suryanarayan",
+            "score": "7.05"
         },
         {
-          "name": "Arjun Venkatesh",
-          "score": "3.93"
+            "name": "Sanjeev Kumar",
+            "score": "6.4"
         },
         {
-          "name": "Anirudh Yamunan Govindarajan",
-          "score": "2.44"
+            "name": "Naganesan Thirunavukarasu",
+            "score": "5.72"
         },
         {
-          "name": "Lakshana Satish Kumar",
-          "score": "2.34"
+            "name": "Prashanth Swaminathan",
+            "score": "5.4"
         },
         {
-          "name": "Nitin Kumar",
-          "score": "1.42"
+            "name": "Rithesh Subbulakshmi Saravanakumar",
+            "score": "4.88"
         },
         {
-          "name": "Kshitij Dhara",
-          "score": "1.38"
+            "name": "Anirudh Yamunan Govindarajan",
+            "score": "2.44"
         },
         {
-          "name": "Logesh Santhosh",
-          "score": "1.22"
+            "name": "Lakshana Satish Kumar",
+            "score": "2.34"
         },
         {
-          "name": "Dharshana Satish Kumar",
-          "score": "1.17"
+            "name": "Kathiresan Chellappan",
+            "score": "1.42"
+        },
+        {
+            "name": "Nitin Kumar",
+            "score": "1.42"
+        },
+        {
+            "name": "Kshitij Dhara",
+            "score": "1.38"
+        },
+        {
+            "name": "Logesh Santhosh",
+            "score": "1.22"
+        },
+        {
+            "name": "Dharshana Satish Kumar",
+            "score": "1.17"
         }
     ]
     }
