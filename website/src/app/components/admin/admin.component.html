@@ -1,0 +1,31 @@
+<mat-card *ngIf="signedIn===false">
+    <h1>Sign In</h1>
+    <mat-form-field>
+        <input matInput #username placeholder="Username" type="text">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput #password placeholder="Password" type="password">
+    </mat-form-field>
+    <button mat-button color="accent" (click)="login(username.value, password.value)">Login</button>
+</mat-card>
+<mat-card *ngIf="signedIn===true">
+    <h1>Generate C3 scores</h1>
+    <mat-form-field>
+        <input matInput #competitionId placeholder="Enter competition ID" type="text">
+    </mat-form-field>
+    <button mat-button color="accent" (click)="generateC3Scores(competitionId.value)">Generate</button>
+</mat-card>
+<mat-card *ngIf="signedIn===true">
+    <h1>Add competition to C3</h1>
+    <mat-form-field>
+        <input matInput #competitionId placeholder="Enter competition ID" type="text">
+    </mat-form-field>
+    <button mat-button color="accent" (click)="addCompetitionToC3(competitionId.value)">Add</button>
+</mat-card>
+<mat-card *ngIf="signedIn===true">
+    <h1>Add competition to C3 Cup</h1>
+    <mat-form-field>
+        <input matInput #competitionId placeholder="Enter competition ID" type="text">
+    </mat-form-field>
+    <button mat-button color="accent" (click)="addCompetitionToC3Cup(competitionId.value)">Add</button>
+</mat-card>
