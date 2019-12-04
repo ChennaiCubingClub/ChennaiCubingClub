@@ -29,7 +29,6 @@ server/src/main/resources/hibernate.cfg.xml
 server/HELP.md
 server/target/
 !.server/mvn/wrapper/maven-wrapper.jar
-!**server/src/main/**
 !**server/src/test/**
 
 ### STS ###
