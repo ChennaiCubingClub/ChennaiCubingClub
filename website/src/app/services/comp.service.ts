@@ -10,11 +10,18 @@ export class CompService {
 
   upcomingcomp: any = [
     {
-      "date" : "Dec 28 - 29, 2019",
-      "site" : "https://www.worldcubeassociation.org/competitions/C3CupFinale2019",
-      "name" : "C3 Cup Finale 2019",
-      "venue" : "JSV Subhiksha Mahal",
-      "location": "Kanchipuram, Tamil Nadu, India"
+      "date" : "Jan 31 - Feb 2, 2020",
+      "site" : "https://www.worldcubeassociation.org/competitions/CMITessellateCubeOpen2020",
+      "name" : "CMI Tessellate Cube Open 2020",
+      "venue" : "Chennai Mathematical Institute",
+      "location": "Chengalpattu, Tamil Nadu, India"
+    },
+    {
+        "date" : "Dec 28 - 29, 2019",
+        "site" : "https://www.worldcubeassociation.org/competitions/C3CupFinale2019",
+        "name" : "C3 Cup Finale 2019",
+        "venue" : "JSV Subhiksha Mahal",
+        "location": "Kanchipuram, Tamil Nadu, India"
     }
   ];
 
