@@ -1,7 +1,13 @@
 CREATE TABLE C3CupPoints (
+    id int NOT NULL AUTO_INCREMENT,
     wca_id VARCHAR(10) NOT NULL,
     competition_id VARCHAR(32) NOT NULL,
-    points DECIMAL(8,2)
+    competition_name varchar(50) NOT NULL,
+    points DECIMAL(8,2),
+    year smallint(5) unsigned NOT NULL,
+    month smallint(5) unsigned NOT NULL,
+    day smallint(5) unsigned NOT NULL,
+    person_name varchar(80) NOT NULL
 );
 
 CREATE TABLE C3Competitions (
@@ -20,3 +26,4 @@ CREATE TABLE C3Users (
     password VARCHAR(63) NOT NULL,
     token VARCHAR(63)
 );
+

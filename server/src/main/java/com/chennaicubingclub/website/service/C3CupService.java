@@ -1,4 +1,4 @@
-package com.chennaicubingclub.website.api;
+package com.chennaicubingclub.website.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,23 +11,37 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.chennaicubingclub.website.HibernateUtil;
-import com.chennaicubingclub.website.data.C3CompetitionsTable;
-import com.chennaicubingclub.website.data.C3CupPointsTable;
-import com.chennaicubingclub.website.data.CompetitionsTable;
-import com.chennaicubingclub.website.data.PersonsTable;
-import com.chennaicubingclub.website.data.ResultsTable;
+import com.chennaicubingclub.website.entity.C3CompetitionsTable;
+import com.chennaicubingclub.website.entity.C3CupPointsTable;
+import com.chennaicubingclub.website.entity.CompetitionsTable;
+import com.chennaicubingclub.website.entity.ResultsTable;
+import com.chennaicubingclub.website.repository.C3CompetitionsRepo;
+import com.chennaicubingclub.website.repository.C3CupRepo;
+import com.chennaicubingclub.website.repository.CompetitionsRepo;
+import com.chennaicubingclub.website.repository.ResultsRepo;
 
-public class C3CupApi implements ControllerApi {
-
+@Service("C3Cup")
+public class C3CupService implements ServiceInterface {
+	
+	@Autowired
+	C3CupRepo pointRepo;
+	
+	@Autowired
+	C3CompetitionsRepo compRepo;
+	
+	@Autowired
+	CompetitionsRepo wcaCompRepo;
+	
+	@Autowired
+	ResultsRepo resultsRepo;
+	
 	@Override
-	public void controller(String[] components, HttpServletRequest request, HttpServletResponse response) {
+	public void action(String[] components, HttpServletRequest request, HttpServletResponse response) {
 		switch (request.getMethod()) {
 			case "POST":
 				if (components[0].equals("generateCompetitionScores")) {
@@ -49,36 +63,27 @@ public class C3CupApi implements ControllerApi {
 	// O/P: success
 	void generateCompetitionScores(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> responseMap = new HashMap<String, String>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 		if (request.getParameterMap().containsKey("competitionId")) {
 			Map<String, BigDecimal> points = new HashMap<String, BigDecimal>();
+			Map<String, String> names = new HashMap<String, String>();
 			String competitionId = request.getParameter("competitionId");
-			Query deleteQuery = session.createQuery("delete from C3CupPointsTable where competitionId = :competitionId");
-			deleteQuery.setString("competitionId", competitionId);
-			deleteQuery.executeUpdate();
-			Query eventsQuery = session.createQuery("select distinct eventId from ResultsTable where competitionId = :competitionId");
-			eventsQuery.setString("competitionId", competitionId);
-			@SuppressWarnings("unchecked")
-			List<String[]> eventsList = eventsQuery.list();
+			List<C3CupPointsTable> pointList = pointRepo.getPointList(competitionId);
+			for (C3CupPointsTable point: pointList) {
+				pointRepo.delete(point);
+			}
+			List<String> eventsList = resultsRepo.getEventList(competitionId);
 			String[] eventsArray = (String[]) eventsList.toArray(new String[eventsList.size()]);
 			for (String event: eventsArray) {
-				Query competitorCountQuery = session.createQuery("select count(distinct personId) from ResultsTable where competitionId = :competitionId and eventId = :eventId");
-				competitorCountQuery.setString("competitionId", competitionId);
-				competitorCountQuery.setString("eventId", event);
-				Long competitorCount = (Long)competitorCountQuery.uniqueResult();
+				Long competitorCount = (Long)resultsRepo.getCompetitorCount(competitionId, event);
 				BigDecimal x = getX(event, (new BigDecimal(competitorCount)).divide(new BigDecimal(100), 2, RoundingMode.CEILING));
-				Query winnersListQuery = session.createQuery("from ResultsTable where competitionId = :competitionId and eventId = :eventId and (roundTypeId = 'c' or roundTypeId = 'f') and pos <= 10 and (value1 > 0 or value2 > 0 or value3 > 0 or value4 > 0 or value5 > 0)");
-				winnersListQuery.setString("competitionId", competitionId);
-				winnersListQuery.setString("eventId", event);
-				@SuppressWarnings("unchecked")
-				List<ResultsTable[]> winnersList = winnersListQuery.list();
+				List<ResultsTable> winnersList = resultsRepo.getWinnersList(competitionId, event);
 				ResultsTable[] winnersArray = (ResultsTable[]) winnersList.toArray(new ResultsTable[winnersList.size()]);
 				for (ResultsTable winner: winnersArray) {
 					if (points.get(winner.personId) == null) {
 						points.put(winner.personId, new BigDecimal(0));
 					}
 					points.put(winner.personId, points.get(winner.personId).add(getPoints(x, winner.pos)));
+					names.put(winner.personId, winner.personName);
 				}
 			}
 			for (String key: points.keySet()) {
@@ -86,14 +91,13 @@ public class C3CupApi implements ControllerApi {
 				newEntry.wcaId = key;
 				newEntry.competitionId = competitionId;
 				newEntry.points = points.get(key);
-				session.save(newEntry);
-			}
-			try {
-				session.getTransaction().commit();
-			} catch (HibernateException e) {
-				//
-			} finally {
-				//
+				newEntry.personName = names.get(key);
+				CompetitionsTable competition = wcaCompRepo.getCompetition(competitionId);
+				newEntry.competitionName = competition.name;
+				newEntry.year = competition.year;
+				newEntry.month = competition.month;
+				newEntry.day = competition.day;
+				pointRepo.save(newEntry);
 			}
 			responseMap.put("success", "true");
 			response.setStatus(200);
@@ -110,7 +114,6 @@ public class C3CupApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
 	
 	private BigDecimal getX(String eventId, BigDecimal y) {
@@ -156,38 +159,32 @@ public class C3CupApi implements ControllerApi {
 	// O/P: success
 	void getTotalScorecard(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		System.out.println("1");
 		Map<String, BigDecimal> points = new HashMap<String, BigDecimal>();
-		Query competitionListQuery = session.createQuery("from C3CompetitionsTable where c3cup = true");
-		System.out.println("2");
-		@SuppressWarnings("unchecked")
-		List<C3CompetitionsTable[]> competitionList = competitionListQuery.list();
+		Map<String, String> names = new HashMap<String, String>();
+		Map<String, C3CupPointsTable> competitionDay = new HashMap<String, C3CupPointsTable>();
+		List<C3CompetitionsTable> competitionList = compRepo.getC3Competitions();
 		C3CompetitionsTable[] competitionsArray = (C3CompetitionsTable[]) competitionList.toArray(new C3CompetitionsTable[competitionList.size()]);
-		System.out.println("3");
 		for (C3CompetitionsTable competition: competitionsArray) {
-			Query c3cupList = session.createQuery("from C3CupPointsTable where competitionId = :competitionId");
-			c3cupList.setString("competitionId", competition.id);
-			System.out.println("4");
-			@SuppressWarnings("unchecked")
-			List<C3CupPointsTable[]> competitorList = c3cupList.list();
+			List<C3CupPointsTable> competitorList = pointRepo.getPointList(competition.id);
 			C3CupPointsTable[] array = (C3CupPointsTable[]) competitorList.toArray(new C3CupPointsTable[competitorList.size()]);
 			for (C3CupPointsTable element: array) {
 				if (points.get(element.wcaId) == null) {
 					points.put(element.wcaId, new BigDecimal(0));
+					names.put(element.wcaId, element.personName);
+				}
+				if (competitionDay.get(element.competitionId) == null) {
+					competitionDay.put(element.competitionId, element);
 				}
 				points.put(element.wcaId, points.get(element.wcaId).add(element.points));
 			}
 		}
-		System.out.println("5");
 		final Integer size = points.keySet().size();
 		JSONObject rankList[] = new JSONObject[size];
 		int i = 0;
 		for (String key: points.keySet()) {
 			try {
 				rankList[i] = new JSONObject();
-				rankList[i].put("name", this.getPersonName(session, key));
+				rankList[i].put("name", names.get(key));
 				rankList[i].put("points", points.get(key));
 				i = i + 1;
 			} catch (JSONException e) {
@@ -195,7 +192,6 @@ public class C3CupApi implements ControllerApi {
 			}
 		}
 		
-		System.out.println("6");
 		// sorting
 		for (i = 0; i < rankList.length; i++) {
 			int highest = i;
@@ -203,7 +199,6 @@ public class C3CupApi implements ControllerApi {
 				try {
 					if (((BigDecimal)rankList[j].get("points")).compareTo((BigDecimal)rankList[highest].get("points")) == 1) {
 						highest = j;
-						System.out.println("7");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -237,23 +232,16 @@ public class C3CupApi implements ControllerApi {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("8");
 		
 		// last competition calculation
-		Query firstComp = session.createQuery("from CompetitionsTable where id = :id");
-		firstComp.setString("id", competitionsArray[0].id);
-		CompetitionsTable lastComp = (CompetitionsTable)firstComp.uniqueResult();
-		System.out.println("9");
+		C3CupPointsTable lastComp = competitionDay.get(competitionsArray[0].id);
 		for (i = 1; i < competitionsArray.length; i++) {
-			Query getComp = session.createQuery("from CompetitionsTable where id = :id");
-			getComp.setString("id", competitionsArray[i].id);
-			CompetitionsTable cur = (CompetitionsTable)getComp.uniqueResult();
+			C3CupPointsTable cur = competitionDay.get(competitionsArray[i].id);
 			if (cur.year.intValue() > lastComp.year.intValue() || (cur.year.intValue() == lastComp.year.intValue() && cur.month.intValue() > lastComp.month.intValue()) || (cur.year.intValue() == lastComp.year.intValue() && cur.month.intValue() == lastComp.month.intValue() && cur.day.intValue() > lastComp.day.intValue())) {
 				lastComp = cur;
 			}
 		}
-		System.out.println("10");
-		responseMap.put("lastComp", lastComp.name);
+		responseMap.put("lastComp", lastComp.competitionName);
 		responseMap.put("list", rankList);
 		response.setStatus(200);
 		response.setContentType("application/json");
@@ -265,44 +253,37 @@ public class C3CupApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
 	
 	// I/P: <none>
 	// O/P: success
 	void getIndividualScores(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> responseMap = new HashMap<String, Object>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 		Map<String, BigDecimal> points = new HashMap<String, BigDecimal>();
-		Query competitionListQuery = session.createQuery("from C3CompetitionsTable where c3cup = true");
-		@SuppressWarnings("unchecked")
-		List<C3CompetitionsTable[]> competitionList = competitionListQuery.list();
+		Map<String, String> names = new HashMap<String, String>();
+		Map<String, C3CupPointsTable> competitionDay = new HashMap<String, C3CupPointsTable>();
+		List<C3CompetitionsTable> competitionList = compRepo.getC3Competitions();
 		C3CompetitionsTable[] competitionsArray = (C3CompetitionsTable[]) competitionList.toArray(new C3CompetitionsTable[competitionList.size()]);
 		for (C3CompetitionsTable competition: competitionsArray) {
-			Query c3cupList = session.createQuery("from C3CupPointsTable where competitionId = :competitionId");
-			c3cupList.setString("competitionId", competition.id);
-			@SuppressWarnings("unchecked")
-			List<C3CupPointsTable[]> competitorList = c3cupList.list();
+			List<C3CupPointsTable> competitorList = pointRepo.getPointList(competition.id);
 			C3CupPointsTable[] array = (C3CupPointsTable[]) competitorList.toArray(new C3CupPointsTable[competitorList.size()]);
 			for (C3CupPointsTable element: array) {
 				if (points.get(element.wcaId) == null) {
 					points.put(element.wcaId, new BigDecimal(0));
+					names.put(element.wcaId, element.personName);
+				}
+				if (competitionDay.get(element.competitionId) == null) {
+					competitionDay.put(element.competitionId, element);
 				}
 				points.put(element.wcaId, points.get(element.wcaId).add(element.points));
 			}
 		}
-		
 		JSONObject previousCompetitions[] = new JSONObject[competitionsArray.length];
 		for (int i = 0; i < competitionsArray.length; i++) {
-			Query lastCompQuery = session.createQuery("from CompetitionsTable where id = :id");
-			lastCompQuery.setString("id", competitionsArray[i].id);
-			CompetitionsTable lastComp = (CompetitionsTable)lastCompQuery.uniqueResult();
+			C3CupPointsTable lastComp = competitionDay.get(competitionsArray[i].id);
 			int lastCompIndex = i;
 			for (int j = i + 1; j < competitionsArray.length; j++) {
-				Query getComp = session.createQuery("from CompetitionsTable where id = :id");
-				getComp.setString("id", competitionsArray[j].id);
-				CompetitionsTable cur = (CompetitionsTable)getComp.uniqueResult();
+				C3CupPointsTable cur = competitionDay.get(competitionsArray[j].id);
 				if (cur.year.intValue() > lastComp.year.intValue() || (cur.year.intValue() == lastComp.year.intValue() && cur.month.intValue() > lastComp.month.intValue()) || (cur.year.intValue() == lastComp.year.intValue() && cur.month.intValue() == lastComp.month.intValue() && cur.day.intValue() > lastComp.day.intValue())) {
 					lastComp = cur;
 					lastCompIndex = j;
@@ -313,8 +294,8 @@ public class C3CupApi implements ControllerApi {
 			competitionsArray[lastCompIndex] = temp;
 			previousCompetitions[i] = new JSONObject();
 			try {
-				previousCompetitions[i].put("competitionId", lastComp.id);
-				previousCompetitions[i].put("competitionName", lastComp.name);
+				previousCompetitions[i].put("competitionId", lastComp.competitionId);
+				previousCompetitions[i].put("competitionName", lastComp.competitionName);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -324,15 +305,12 @@ public class C3CupApi implements ControllerApi {
 		for (int i = 0; i < competitionsArray.length; i++) {
 			try {
 				String competitionId = (String)previousCompetitions[i].get("competitionId");
-				Query c3CupListQuery = session.createQuery("from C3CupPointsTable where competitionId = :competitionId order by points desc");
-				c3CupListQuery.setString("competitionId", competitionId);
-				@SuppressWarnings("unchecked")
-				List<C3CupPointsTable[]> list = c3CupListQuery.list();
+				List<C3CupPointsTable> list = pointRepo.getPointListSorted(competitionId);
 				C3CupPointsTable[] array = (C3CupPointsTable[]) list.toArray(new C3CupPointsTable[list.size()]);
 				JSONObject pointList[] = new JSONObject[list.size()];
 				for (int j = 0; j < array.length; j++) {
 					pointList[j] = new JSONObject();
-					pointList[j].put("name", this.getPersonName(session, array[j].wcaId));
+					pointList[j].put("name", names.get(array[j].wcaId));
 					pointList[j].put("points", array[j].points);
 				}
 				previousCompetitions[i].put("c3scores", pointList);
@@ -353,13 +331,6 @@ public class C3CupApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
 
-	private String getPersonName(Session session, String wcaId) {
-		Query query = session.createQuery("from PersonsTable where wcaId = :wcaId");
-		query.setString("wcaId", wcaId);
-		PersonsTable result = (PersonsTable)query.uniqueResult();
-		return result.name;
-	}
 }

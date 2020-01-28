@@ -1,4 +1,4 @@
-package com.chennaicubingclub.website.data;
+package com.chennaicubingclub.website.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

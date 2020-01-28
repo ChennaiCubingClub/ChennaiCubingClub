@@ -1,28 +1,30 @@
-package com.chennaicubingclub.website.api;
+package com.chennaicubingclub.website.service;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.json.JSONObject;
 
-import com.chennaicubingclub.website.HibernateUtil;
-import com.chennaicubingclub.website.data.C3UsersTable;
-import com.chennaicubingclub.website.data.ResultsTable;
+import com.chennaicubingclub.website.entity.C3UsersTable;
+import com.chennaicubingclub.website.repository.C3UsersRepo;
 
-public class UsersApi implements ControllerApi {
+@Service("Users")
+public class UsersService implements ServiceInterface {
+	
+	@Autowired
+	C3UsersRepo repo;
 
 	@Override
-	public void controller(String[] components, HttpServletRequest request, HttpServletResponse response) {
+	public void action(String[] components, HttpServletRequest request, HttpServletResponse response) {
 		switch (request.getMethod()) {
 			case "POST":
 				if (components[0].equals("login")) {
@@ -40,19 +42,14 @@ public class UsersApi implements ControllerApi {
 	// O/P: success
 	void login(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> responseMap = new HashMap<String, String>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 		if (request.getParameterMap().containsKey("username") && request.getParameterMap().containsKey("password")) {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			Query loginQuery = session.createQuery("from C3UsersTable where username = :username and password = :password");
-			loginQuery.setString("username", username);
-			loginQuery.setString("password", getMd5(password));
-			C3UsersTable user = (C3UsersTable)loginQuery.uniqueResult();
-			if (user != null) {
+			java.util.List<C3UsersTable> users = repo.getUsers(username, getMd5(password));
+			if (users.size() == 1) {
+				C3UsersTable user = users.get(0);
 				user.token = generateToken();
-				session.save(user);
-				session.getTransaction().commit();
+				repo.save(user);
 				responseMap.put("success", "true");
 				responseMap.put("token", user.token);
 				response.setStatus(200);
@@ -73,7 +70,6 @@ public class UsersApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
 	
 	private String getMd5(String input) { 
@@ -104,7 +100,7 @@ public class UsersApi implements ControllerApi {
     }
 	
 	private String generateToken() { 
-  
+		  
         // chose a Character random from this String 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                     + "0123456789"
@@ -124,7 +120,7 @@ public class UsersApi implements ControllerApi {
             // add Character one by one in end of sb 
             sb.append(AlphaNumericString 
                           .charAt(index)); 
-        } 
+        }
   
         return sb.toString(); 
     }

@@ -5,20 +5,35 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chennaicubingclub.website.api.ControllerApi;
+import com.chennaicubingclub.website.service.C3CompetitionsService;
+import com.chennaicubingclub.website.service.C3CupService;
+import com.chennaicubingclub.website.service.UsersService;
 
 @RestController
 @RequestMapping("/api")
 public class RestApi {
+	
+	@Autowired
+	@Qualifier("C3Competitions")
+	C3CompetitionsService c3Competitions;
+	
+	@Autowired
+	@Qualifier("Users")
+	UsersService users;
+	
+	@Autowired
+	@Qualifier("C3Cup")
+	C3CupService c3cup;
 
 	@CrossOrigin(origins = "*")
 	@RequestMapping({"/*", "/*/*", "/*/*/*", "/*/*/*/*"})
 	public void controller(HttpServletRequest request, HttpServletResponse response) {
-		ControllerApi controllerApi;
 		if (!isAuthenticated(request.getHeader("Authorization"))) {
 			response.setStatus(401);
 		} else {
@@ -31,13 +46,13 @@ public class RestApi {
 					case "v1":
 						switch (components[3]) {
 							case "c3cup":
-								controllerApi = new C3CupApi();
+								c3cup.action(Arrays.copyOfRange(components, 4, components.length), request, response);
 								break;
 							case "c3competitions":
-								controllerApi = new C3CompetitionsApi();
+								c3Competitions.action(Arrays.copyOfRange(components, 4, components.length), request, response);
 								break;
 							case "users":
-								controllerApi = new UsersApi();
+								users.action(Arrays.copyOfRange(components, 4, components.length), request, response);
 								break;
 							default:
 								response.setStatus(404);
@@ -49,7 +64,6 @@ public class RestApi {
 						return;
 				}
 			}
-			controllerApi.controller(Arrays.copyOfRange(components, 4, components.length), request, response);
 		}
 	}
 	
