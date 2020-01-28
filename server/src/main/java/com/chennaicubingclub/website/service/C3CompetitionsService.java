@@ -1,4 +1,4 @@
-package com.chennaicubingclub.website.api;
+package com.chennaicubingclub.website.service;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,17 +7,21 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.chennaicubingclub.website.HibernateUtil;
-import com.chennaicubingclub.website.data.C3CompetitionsTable;
+import com.chennaicubingclub.website.entity.C3CompetitionsTable;
+import com.chennaicubingclub.website.repository.C3CompetitionsRepo;
 
-public class C3CompetitionsApi implements ControllerApi {
+@Service("C3Competitions")
+public class C3CompetitionsService implements ServiceInterface {
+	
+	@Autowired
+	C3CompetitionsRepo compRepo;
 
 	@Override
-	public void controller(String[] components, HttpServletRequest request, HttpServletResponse response) {
+	public void action(String[] components, HttpServletRequest request, HttpServletResponse response) {
 		switch (request.getMethod()) {
 			case "POST":
 				if (components[0].equals("addCompetitionToC3")) {
@@ -32,19 +36,16 @@ public class C3CompetitionsApi implements ControllerApi {
 				response.setStatus(404);
 		}
 	}
-
+	
 	// I/P: competitionId
 	// O/P: success
 	void addCompetitionToC3(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> responseMap = new HashMap<String, String>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 		if (request.getParameterMap().containsKey("competitionId")) {
 			C3CompetitionsTable newComp = new C3CompetitionsTable();
 			newComp.id = request.getParameter("competitionId");
 			newComp.c3cup = false;
-			session.save(newComp);
-			session.getTransaction().commit();
+			compRepo.save(newComp);
 			responseMap.put("success", "true");
 			response.setStatus(200);
 		} else {
@@ -60,22 +61,16 @@ public class C3CompetitionsApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
 	
 	// I/P: competitionId
 	// O/P: success
 	void addCompetitionToC3Cup(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> responseMap = new HashMap<String, String>();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
 		if (request.getParameterMap().containsKey("competitionId")) {
-			Query query = session.createQuery("from C3CompetitionsTable where id = :competitionId");
-			query.setString("competitionId", request.getParameter("competitionId"));
-			C3CompetitionsTable comp = (C3CompetitionsTable)query.uniqueResult();
+			C3CompetitionsTable comp = compRepo.getCompetition(request.getParameter("competitionId"));
 			comp.c3cup = true;
-			session.save(comp);
-			session.getTransaction().commit();
+			compRepo.save(comp);
 			responseMap.put("success", "true");
 			response.setStatus(200);
 		} else {
@@ -91,7 +86,5 @@ public class C3CompetitionsApi implements ControllerApi {
 			e.printStackTrace();
 			response.setStatus(503);
 		}
-		session.close();
 	}
-	
 }
