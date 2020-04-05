@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule, MatExpansionModule, MatTableModule } from '@angular/material';
+import { InformationComponent } from './components/information/information.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatInputModule, MatExpansionModule, MatTableModule } from '@angular/mat
     ContactComponent,
     SponsorshipComponent,
     C3CupComponent,
-    AdminComponent
+    AdminComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule,
