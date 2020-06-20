@@ -9,20 +9,20 @@ export class CompService {
   constructor(private http: HttpClient) { }
 
   upcomingcomp: any = [
-    {
-        "date" : "Apr 23 - 26, 2020",
-        "site" : "https://www.worldcubeassociation.org/competitions/IndianNationals2020",
-        "name" : "Indian Nationals 2020",
-        "venue" : "SRM University",
-        "location": "Chengalpattu, Tamil Nadu, India"
-    },
-    {
-        "date" : "Jan 31 - Feb 2, 2020",
-        "site" : "https://www.worldcubeassociation.org/competitions/CMITessellateCubeOpen2020",
-        "name" : "CMI Tessellate Cube Open 2020",
-        "venue" : "Chennai Mathematical Institute",
-        "location": "Chengalpattu, Tamil Nadu, India"
-    }
+    // {
+    //     "date" : "Apr 23 - 26, 2020",
+    //     "site" : "https://www.worldcubeassociation.org/competitions/IndianNationals2020",
+    //     "name" : "Indian Nationals 2020",
+    //     "venue" : "SRM University",
+    //     "location": "Chengalpattu, Tamil Nadu, India"
+    // },
+    // {
+    //     "date" : "Jan 31 - Feb 2, 2020",
+    //     "site" : "https://www.worldcubeassociation.org/competitions/CMITessellateCubeOpen2020",
+    //     "name" : "CMI Tessellate Cube Open 2020",
+    //     "venue" : "Chennai Mathematical Institute",
+    //     "location": "Chengalpattu, Tamil Nadu, India"
+    // }
   ];
 
   getUpcomingComp(){
@@ -30,6 +30,13 @@ export class CompService {
   }
 
   pastcomp: any = [
+            {
+              "date" : "Jan 31 - Feb 2, 2020",
+              "site" : "https://www.worldcubeassociation.org/competitions/CMITessellateCubeOpen2020",
+              "name" : "CMI Tessellate Cube Open 2020",
+              "venue" : "Chennai Mathematical Institute",
+              "location": "Chengalpattu, Tamil Nadu, India"
+            },
             {
                 "date" : "Dec 28 - 29, 2019",
                 "site" : "https://www.worldcubeassociation.org/competitions/C3CupFinale2019",
